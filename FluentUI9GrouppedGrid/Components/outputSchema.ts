@@ -15,6 +15,7 @@ export const selectedRowSchema: JSONSchema4 = {
     }
 };
 
+
 export type TSelectedRow = {
     recordId: string;
     recordDate: string;    

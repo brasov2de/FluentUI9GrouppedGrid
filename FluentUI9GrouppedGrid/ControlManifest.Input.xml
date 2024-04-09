@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.5" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
+  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.14" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     
@@ -14,10 +14,10 @@
     <property name="to" display-name-key="To" description-key="To" of-type="DateAndTime.DateOnly" usage="input" required="false" />
     <property name="refresh" display-name-key="Refresh" description-key="Refresh" of-type="SingleLine.Text" usage="input" required="false" />
 
-    <property name="selectedCell" display-name-key="SelectedCell" description-key="SelectedCell" of-type="Object" usage="output" required="false" />
-    <property name="selectedCellSchema" display-name-key="selectedCellSchema" description-key="selectedCellSchema" of-type="SingleLine.Text" usage="bound" hidden="true" />
+    <property name="selectedRow" display-name-key="SelectedRow" description-key="SelectedRow" of-type="Object" usage="output" required="false" />
+    <property name="selectedRowSchema" display-name-key="selectedRowSchema" description-key="selectedRowSchema" of-type="SingleLine.Text" usage="bound" hidden="true" />
     <property-dependencies>      
-      <property-dependency input="selectedCellSchema" output="selectedCell" required-for="schema" />
+      <property-dependency input="selectedRowSchema" output="selectedRow" required-for="schema" />
     </property-dependencies>
 
     <resources>

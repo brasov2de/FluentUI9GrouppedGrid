@@ -70,4 +70,14 @@ export function filterDataset(dataset: ComponentFramework.PropertyTypes.DataSet,
     dataset.refresh();
 }
 
+export function getSortedColumnsOnView(columns: ComponentFramework.PropertyHelper.DataSetApi.Column[], excludeColumns: string[]): ComponentFramework.PropertyHelper.DataSetApi.Column[] {    
+    const columns1 = columns.filter((columnItem) => {
+            // some column are supplementary and their order is not > 0
+            return columnItem.order >= 0 && !excludeColumns.includes(columnItem.alias) && !excludeColumns.includes(columnItem.name);
+        });
 
+    // Sort those columns so that they will be rendered in order
+    return columns1.sort((a, b) => {
+        return a.order - b.order;
+    });
+}

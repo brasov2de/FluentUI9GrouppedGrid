@@ -2,7 +2,7 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import * as React from "react";
 import { addDays, formateDate } from "./Components/data";
 import { GroupedGrid, IGroupedGridProps } from "./Components/GrouppedGrid";
-import { TSelectedRow } from "./Components/outputSchema";
+import { TSelectedRow, selectedRowSchema } from "./Components/outputSchema";
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<IInputs, IOutputs> {
@@ -63,8 +63,21 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
      * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as "bound" or "output"
      */
     public getOutputs(): IOutputs {
-        return { };
+        return {
+            selectedRow : this.selectedRow
+         };
     }
+
+         /**
+     * It is called by the framework prior to a control init to get the output object(s) schema
+     * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
+     * @returns an object schema based on nomenclature defined in manifest
+     */
+         public async getOutputSchema(context: ComponentFramework.Context<IInputs>): Promise<any> {
+            return Promise.resolve({
+                selectedRow: selectedRowSchema
+            });
+        }
 
     /**
      * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
