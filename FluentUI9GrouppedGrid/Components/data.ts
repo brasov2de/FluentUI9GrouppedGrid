@@ -51,7 +51,8 @@ export function parseDataset(dataset: ComponentFramework.PropertyTypes.DataSet, 
 
 
 export function filterDataset(dataset: ComponentFramework.PropertyTypes.DataSet, from: string, to: string, context: ComponentFramework.Context<IInputs>) {
-    dataset.filtering.clearFilter();
+    return; 
+    /*dataset.filtering.clearFilter();
     const conditions : ComponentFramework.PropertyHelper.DataSetApi.ConditionExpression[] = [{
             attributeName: "diana_date",
             conditionOperator: 4, //greater or equal
@@ -68,6 +69,7 @@ export function filterDataset(dataset: ComponentFramework.PropertyTypes.DataSet,
         
     });   
     dataset.refresh();
+    */
 }
 
 export function getSortedColumnsOnView(columns: ComponentFramework.PropertyHelper.DataSetApi.Column[], excludeColumns: string[]): ComponentFramework.PropertyHelper.DataSetApi.Column[] {    

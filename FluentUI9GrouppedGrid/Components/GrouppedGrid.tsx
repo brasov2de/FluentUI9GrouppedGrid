@@ -40,7 +40,7 @@ const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelecte
     const [expandedGroups, setExpandedGroups] = React.useState<TGroupsExpanded>({});
 
     React.useEffect(() => {
-        if(dataset.loading || dataset.filtering.getFilter()==null ) return;
+        if(dataset.loading ) return;
         const dataTmp =  parseDataset(dataset, context);
         setData(dataTmp);
         setColumns(getSortedColumnsOnView(dataset.columns, ["parentId", "diana_projectid"]));
