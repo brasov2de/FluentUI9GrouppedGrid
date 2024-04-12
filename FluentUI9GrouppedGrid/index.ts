@@ -9,6 +9,7 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
     private theComponent: ComponentFramework.ReactControl<IInputs, IOutputs>;
     private notifyOutputChanged: () => void;
     private selectedRow: TSelectedRow | null = null;
+    private onRowEdit: () => void = () => {};
 
     /**
      * Empty constructor.
@@ -32,6 +33,7 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
 
     private setSelectedRow(selectedRow: TSelectedRow |null){
         this.selectedRow = selectedRow;
+        this.onRowEdit();
         this.notifyOutputChanged();
     }
 
@@ -43,12 +45,13 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
     public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
         const from  = context.parameters.from?.raw ?? addDays(new Date(), -7);
         const to = context.parameters.to?.raw ?? new Date();
+        this.onRowEdit = (context as any).events.OnRowEdit;
         const props: IGroupedGridProps  = { 
             dataset: context.parameters.dataset, 
             theme: (context as any).fluentDesignLanguage?.tokenTheme,
             from: formateDate(from, context),
             to: formateDate(to, context),          
-            setSelectedRow: this.setSelectedRow,
+            setSelectedRow: this.setSelectedRow.bind(this),
             refresh: context.parameters.refresh?.raw,
             context
 
