@@ -114,8 +114,12 @@ const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelecte
                     {expanded && childRows.map((childRow) => {      
                         const onSelect = () => {
                             dataset.setSelectedRecordIds([childRow.getRecordId()]);
-                            const currentDate = formateDate(childRow.getValue("diana_date"), context);
-                            const sum = childRows.filter((row)=>formateDate(row.getValue("diana_date"), context) == currentDate).reduce((acc, row) => acc + row.getValue("diana_value"), 0);
+                         //   const currentDate = formateDate(childRow.getValue("diana_date"), context);
+                            const sum = dataset.sortedRecordIds.reduce((acc, id) => {
+                                    const row =  dataset.records[id];
+                                   // const isCurrentDate = formateDate(row.getValue("diana_date") as Date, context) == currentDate;
+                                    return acc + (row.getValue("diana_value") as number ?? 0);
+                                }, 0);
                             setSelectedRow({
                                 recordId: childRow.getRecordId(),
                                 recordDate: childRow.getFormattedValue("diana_date"),

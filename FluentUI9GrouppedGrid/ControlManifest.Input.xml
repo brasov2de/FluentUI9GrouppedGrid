@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.19" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
+  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.21" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     
