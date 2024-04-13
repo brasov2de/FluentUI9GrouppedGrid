@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.26" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
+  <control namespace="Dianamics" constructor="FluentUI9GrouppedGrid" version="0.0.28" display-name-key="FluentUI9GrouppedGrid" description-key="FluentUI9GrouppedGrid description" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     
@@ -20,7 +20,8 @@
       <property-dependency input="selectedRowSchema" output="selectedRow" required-for="schema" />
     </property-dependencies>
 
-    <event name="OnRowEdit" display-name-key="OnRowEdit" description-key="OnRowEdit" /> 
+    <event name="OnRowEdit" display-name-key="OnRowEdit" description-key="OnRowEdit" />  
+  
 
     <resources>
       <code path="index.ts" order="1"/>

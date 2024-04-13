@@ -28,3 +28,5 @@ export type TSelectedRow = {
         etn: string
     }    
 }
+
+

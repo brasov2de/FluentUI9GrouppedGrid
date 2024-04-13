@@ -26,7 +26,7 @@ export interface IGroupedGridProps {
     theme ?: Theme;
     from : string;
     to : string;
-    setSelectedRow : (selectedRow: TSelectedRow) => void;
+    setSelectedRow : (selectedRow: TSelectedRow) => void;   
     onRowEdit: () => void;
     refresh ?: string | null;
     context: ComponentFramework.Context<IInputs>
@@ -43,13 +43,30 @@ const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelecte
     const [data, setData] = React.useState<TData>({sortedGroups: [], groups: {}});
     const [columns, setColumns] = React.useState<TableColumnDefinition<ComponentFramework.PropertyHelper.DataSetApi.EntityRecord>[]>(getSortedColumnsOnView(dataset.columns, ["parentId","diana_projectid"]))
     const [expandedGroups, setExpandedGroups] = React.useState<TGroupsExpanded>({});
+    const [sum, setSum] = React.useState<number>(0);
 
     React.useEffect(() => {
         if(dataset.loading ) return;
         const dataTmp =  parseDataset(dataset, context);
         setData(dataTmp);
         setColumns(getSortedColumnsOnView(dataset.columns, ["parentId", "diana_projectid"]));
-        setExpandedGroups(dataTmp.sortedGroups.reduce((acc, key) => {acc[key] = true; return acc;}, {} as TGroupsExpanded));        
+        setExpandedGroups(dataTmp.sortedGroups.reduce((acc, key) => {acc[key] = true; return acc;}, {} as TGroupsExpanded)); 
+        const newSum = dataset.sortedRecordIds.reduce((acc, id) => {
+            const row =  dataset.records[id];
+           // const isCurrentDate = formateDate(row.getValue("diana_date") as Date, context) == currentDate;
+            return acc + (row.getValue("diana_value") as number ?? 0);
+        }, 0);
+        if(newSum != sum){
+            setSum(newSum);            
+            const row = dataset.records[dataset.getSelectedRecordIds()[0]];            
+            setSelectedRow({
+                recordId: row?.getRecordId(),
+                recordDate: row?.getValue("diana_date") as string ?? "" ,
+                recordValue: row?.getValue("diana_value") as number ?? 0,
+                parentId: row?.getValue("diana_projectid") as any , 
+                dateSum : newSum
+            });           
+        }
     }, [dataset, dataset.loading]);
 
 
@@ -142,23 +159,19 @@ const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelecte
                         const selected = isRowSelected(childRow.getRecordId()); 
                         const onClick = (e : React.MouseEvent) => {
                             toggleRow(e, childRow.getRecordId());
-                            dataset.setSelectedRecordIds([childRow.getRecordId()]);                         
+                            dataset.setSelectedRecordIds([childRow.getRecordId()]);    
+                            setSelectedRow({
+                                recordId: childRow.getRecordId(),
+                                recordDate: childRow.getFormattedValue("diana_date"),
+                                recordValue: childRow.getFormattedValue("diana_value"),
+                                parentId: childRow.getValue("diana_projectid") as any , 
+                                dateSum : sum
+                            });
+                                             
                         };            
                         const openRecord = () => {
                             dataset.setSelectedRecordIds([childRow.getRecordId()]);
-                            //   const currentDate = formateDate(childRow.getValue("diana_date"), context);
-                               const sum = dataset.sortedRecordIds.reduce((acc, id) => {
-                                       const row =  dataset.records[id];
-                                      // const isCurrentDate = formateDate(row.getValue("diana_date") as Date, context) == currentDate;
-                                       return acc + (row.getValue("diana_value") as number ?? 0);
-                                   }, 0);
-                               setSelectedRow({
-                                   recordId: childRow.getRecordId(),
-                                   recordDate: childRow.getFormattedValue("diana_date"),
-                                   recordValue: childRow.getFormattedValue("diana_value"),
-                                   parentId: childRow.getValue("diana_projectid") as any , 
-                                   dateSum : sum
-                               });
+                            //   const currentDate = formateDate(childRow.getValue("diana_date"), context);                              
                             onRowEdit();
                         }   
                         const onKeyDown= (e: React.KeyboardEvent) => {

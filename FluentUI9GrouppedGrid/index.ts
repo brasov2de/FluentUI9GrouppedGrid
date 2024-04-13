@@ -52,7 +52,7 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
             from: formateDate(from, context),
             to: formateDate(to, context),          
             setSelectedRow: this.setSelectedRow.bind(this),
-            onRowEdit : this.onRowEdit,
+            onRowEdit : this.onRowEdit,           
             refresh: context.parameters.refresh?.raw,
             context
 
