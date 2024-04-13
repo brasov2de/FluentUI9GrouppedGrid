@@ -1,5 +1,6 @@
 import { Children } from "react";
 import { IInputs, IOutputs } from "../generated/ManifestTypes";
+import { TableColumnDefinition, createTableColumn } from "@fluentui/react-components";
 export function addDays(date: Date, days: number): Date {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -72,7 +73,7 @@ export function filterDataset(dataset: ComponentFramework.PropertyTypes.DataSet,
     */
 }
 
-export function getSortedColumnsOnView(columns: ComponentFramework.PropertyHelper.DataSetApi.Column[], excludeColumns: string[]): ComponentFramework.PropertyHelper.DataSetApi.Column[] {    
+export function getSortedColumnsOnView(columns: ComponentFramework.PropertyHelper.DataSetApi.Column[], excludeColumns: string[]): TableColumnDefinition<ComponentFramework.PropertyHelper.DataSetApi.EntityRecord>[] {    
     const columns1 = columns.filter((columnItem) => {
             // some column are supplementary and their order is not > 0
             return columnItem.order >= 0 && !excludeColumns.includes(columnItem.alias) && !excludeColumns.includes(columnItem.name);
@@ -81,5 +82,5 @@ export function getSortedColumnsOnView(columns: ComponentFramework.PropertyHelpe
     // Sort those columns so that they will be rendered in order
     return columns1.sort((a, b) => {
         return a.order - b.order;
-    });
+    }).map((column) => createTableColumn<ComponentFramework.PropertyHelper.DataSetApi.EntityRecord>({columnId: column.name}))
 }
