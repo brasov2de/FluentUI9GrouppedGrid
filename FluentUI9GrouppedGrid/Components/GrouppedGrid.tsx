@@ -2,7 +2,7 @@ import * as React from "react";
 import {ChevronDown24Filled, ChevronRight24Filled ,ReOrderDotsVertical24Regular, EditFilled, EditRegular, bundleIcon} from "@fluentui/react-icons";
 import { Input, SpinButton, Table, TableBody, TableCell, TableHeader, TableRow, Theme, Text, makeStyles, TableHeaderCell, TableCellLayout, 
 useFocusableGroup, useArrowNavigationGroup, FluentProvider, TableCellActions, Button} from "@fluentui/react-components";
-import { TData, TGroup, TGroupsExpanded, filterDataset, getSortedColumnsOnView, parseDataset } from "./data";
+import { TData, TGroup, TGroupsExpanded, filterDataset, formateDate, getSortedColumnsOnView, parseDataset } from "./data";
 import { IInputs } from "../generated/ManifestTypes";
 import { TSelectedRow } from "./outputSchema";
 //import { TSelectedCell } from "../outputSchema";
@@ -23,11 +23,12 @@ export interface IGroupedGridProps {
     from : string;
     to : string;
     setSelectedRow : (selectedRow: TSelectedRow) => void;
+    onRowEdit: () => void;
     refresh ?: string | null;
     context: ComponentFramework.Context<IInputs>
 }
 
-const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelectedRow} : IGroupedGridProps) => {
+const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelectedRow, onRowEdit} : IGroupedGridProps) => {
     const styles=useStyles();
     const keyboardNavAttr = useArrowNavigationGroup({ axis: "grid" });
    /* const focusableGroupAttr = useFocusableGroup({
@@ -113,15 +114,19 @@ const GroupedGridRaw = ({dataset, theme, from, to, context,  refresh, setSelecte
                     {expanded && childRows.map((childRow) => {      
                         const onSelect = () => {
                             dataset.setSelectedRecordIds([childRow.getRecordId()]);
-                        };            
-                        const openRecord = () => {
-                            dataset.setSelectedRecordIds([childRow.getRecordId()]);
+                            const currentDate = formateDate(childRow.getValue("diana_date"), context);
+                            const sum = childRows.filter((row)=>formateDate(row.getValue("diana_date"), context) == currentDate).reduce((acc, row) => acc + row.getValue("diana_value"), 0);
                             setSelectedRow({
                                 recordId: childRow.getRecordId(),
                                 recordDate: childRow.getFormattedValue("diana_date"),
                                 recordValue: childRow.getFormattedValue("diana_value"),
-                                parentId: childRow.getValue("diana_projectid") as any                                
+                                parentId: childRow.getValue("diana_projectid") as any , 
+                                dateSum : sum
                             });
+                        };            
+                        const openRecord = () => {
+                            onSelect();
+                            onRowEdit();
                         }      
                         return (<TableRow key={childRow.getRecordId()} onClick={onSelect} onDoubleClick={openRecord}>                             
                         <TableCell >

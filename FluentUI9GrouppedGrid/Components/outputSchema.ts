@@ -5,6 +5,7 @@ export const selectedRowSchema: JSONSchema4 = {
     properties: {    
         recordId : {type: 'string'},                 
         recordDate :  { type: 'string' },        
+        dateSum : { type: 'number' },
         recordValue: { type: 'number' },
         parentId: { type: 'object', properties: {
             id: { type: 'string'},
@@ -18,7 +19,8 @@ export const selectedRowSchema: JSONSchema4 = {
 
 export type TSelectedRow = {
     recordId: string;
-    recordDate: string;    
+    recordDate: string;   
+    dateSum: number; 
     recordValue: number;
     parentId ?: {
         id: string,        

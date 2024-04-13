@@ -32,10 +32,10 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
     }
 
     private setSelectedRow(selectedRow: TSelectedRow |null){
-        this.selectedRow = selectedRow;
-        this.onRowEdit();
+        this.selectedRow = selectedRow;       
         this.notifyOutputChanged();
     }
+
 
     /**
      * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
@@ -52,6 +52,7 @@ export class FluentUI9GrouppedGrid implements ComponentFramework.ReactControl<II
             from: formateDate(from, context),
             to: formateDate(to, context),          
             setSelectedRow: this.setSelectedRow.bind(this),
+            onRowEdit : this.onRowEdit,
             refresh: context.parameters.refresh?.raw,
             context
 
